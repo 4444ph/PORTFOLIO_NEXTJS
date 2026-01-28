@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0f0518;
+  --foreground: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Colors */
+  --color-primary: #7f13ec;
+  --color-primary-glow: #9d4dff;
+  --color-neon-pink: #ff00ff;
+  --color-electric-orange: #ff9900;
+  --color-deep-violet: #140024;
+  --color-grid-line: #3d1c59;
+  --color-background-dark: #0f0518;
+  
+  /* Fonts */
+  --font-display: "Orbitron", sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* CRT Scanlines Effect */
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 50;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* Retro Sun */
+.retro-sun {
+  background: linear-gradient(to bottom, #ff00ff 0%, #ff9900 100%);
+  box-shadow: 0 0 40px #ff9900, 0 0 80px #ff00ff;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+/* Perspective Grid */
+.perspective-grid {
+  transform: perspective(300px) rotateX(40deg) scale(2);
+  transform-origin: 50% 0;
+  animation: move-grid 20s linear infinite;
+}
+
+@keyframes move-grid {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 40px; }
+}
+
+/* Portrait Scanlines */
+.portrait-scanlines {
+  position: relative;
+}
+
+.portrait-scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(255, 0, 255, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* VHS Glitch */
+.vhs-glitch {
+  animation: vhs-flicker 3s infinite;
+}
+
+@keyframes vhs-flicker {
+  0% { opacity: 1; transform: scale(1); filter: contrast(1) saturate(1); }
+  1% { opacity: 0.8; transform: scale(1.01); filter: contrast(1.2) saturate(1.5); }
+  2% { opacity: 1; transform: scale(1); filter: contrast(1) saturate(1); }
+  45% { opacity: 1; transform: translateX(0); }
+  46% { opacity: 0.9; transform: translateX(2px); filter: hue-rotate(90deg); }
+  47% { opacity: 1; transform: translateX(0); filter: hue-rotate(0deg); }
+  100% { opacity: 1; }
 }

@@ -20,6 +20,42 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Admin Panel
+
+This portfolio includes a complete content management system accessible at `/admin`.
+
+### Setup
+
+1. Ensure MongoDB is running (local or Atlas)
+2. Set environment variables in `.env.local`:
+   ```env
+   MONGODB_URI=mongodb://localhost:27017/portfolio
+   ADMIN_USERNAME=admin
+   ADMIN_PASSWORD=admin123
+   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+   ```
+
+### Usage
+
+1. Navigate to [http://localhost:3000/admin](http://localhost:3000/admin)
+2. Login with your admin credentials (default: admin/admin123)
+3. Manage your portfolio content:
+   - **Hero** - Edit hero section content
+   - **Skills** - Add/edit/delete skills
+   - **Experience** - Manage work experience
+   - **Projects** - Add/edit/delete projects
+
+### Features
+
+- 🔐 JWT-based authentication
+- ✨ Modern admin UI with retro aesthetic
+- 📝 Full CRUD operations for all content
+- 🔄 Real-time updates on frontend
+- 📱 Responsive design
+- 🎨 Success/error notifications
+
+> **Note:** For production, change the default admin credentials and use a strong JWT secret!
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
