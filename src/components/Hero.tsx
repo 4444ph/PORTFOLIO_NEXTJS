@@ -35,8 +35,8 @@ export default function Hero() {
 
   // Default fallback data
   const defaultData: HeroData = {
-    title: 'ALEX RAIDER',
-    subtitle: 'Full Stack Architect',
+    title: 'LOADING...',
+    subtitle: 'Frontend Developer',
     description: 'Constructing digital futures on retro foundations. High-performance code with a nostalgic soul. System status: Optimized.',
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAq9HSWuGU4Q6_bUzjWco62L5vgG8jKVbynB7lgAJDdxej9NEFD5ks91BtmSPcIRiYXwRNTye_zWo9XShdGCqG_w8GvCNVJ3GfLdywmm3etlFw42Pi7mBIx-n_w2XiCIp_WqYS2DXl_ElVug9z8WA7qu-9g3MoSskjN4qka1bG8mpcGunUV_9352oLvPjTsN8--6aSQ0pBx4GzRDN3gjxgLCtmIgKB0BsvpmAroly5JOFR886jJJAhluJ1elyQPQIL4qrdLaiUi3g',
     ctaText: 'INITIATE_PROTOCOL',
@@ -103,12 +103,34 @@ export default function Hero() {
         <div className="lg:col-span-5 flex justify-center lg:justify-end order-1 lg:order-2">
           <div className="relative group">
             <div className="relative p-2 rounded-2xl bg-gradient-to-br from-neon-pink via-deep-violet to-primary shadow-[0_0_30px_rgba(255,0,255,0.4),inset_0_0_20px_rgba(127,19,236,0.6)]">
-              <div className="relative overflow-hidden rounded-xl border-2 border-neon-pink/50 portrait-scanlines vhs-glitch">
-                <img 
-                  alt="Professional portrait" 
-                  className="w-64 h-80 md:w-80 md:h-[450px] object-cover contrast-110 saturate-125" 
-                  src={data.imageUrl || 'https://via.placeholder.com/400x500/1a0b2e/ffffff?text=No+Image'}
-                />
+              <div className="relative overflow-hidden rounded-xl border-2 border-neon-pink/50 portrait-scanlines vhs-glitch bg-slate-900/40">
+                {loading ? (
+                  <div className="w-64 h-80 md:w-80 md:h-[450px] flex flex-col items-center justify-center relative overflow-hidden">
+                    {/* Neon Spinner */}
+                    <div className="w-20 h-20 rounded-full border-b-2 border-t-2 border-neon-pink animate-spin mb-6 shadow-[0_0_20px_rgba(255,0,255,0.4)]"></div>
+                    
+                    {/* Scifi Status Text */}
+                    <div className="text-center space-y-2">
+                      <p className="font-mono text-[10px] text-neon-pink tracking-[0.4em] animate-pulse">
+                        SYNCING_BIOMETRICS
+                      </p>
+                      <div className="flex justify-center gap-1">
+                        <div className="w-1 h-3 bg-neon-pink animate-bounce [animation-delay:-0.3s]"></div>
+                        <div className="w-1 h-3 bg-neon-pink animate-bounce [animation-delay:-0.15s]"></div>
+                        <div className="w-1 h-3 bg-neon-pink animate-bounce"></div>
+                      </div>
+                    </div>
+
+                    {/* Scanline overlay inside loader */}
+                    <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%]"></div>
+                  </div>
+                ) : (
+                  <img 
+                    alt="Professional portrait" 
+                    className="w-64 h-80 md:w-80 md:h-[450px] object-cover contrast-110 saturate-125" 
+                    src={data.imageUrl || 'https://via.placeholder.com/400x500/1a0b2e/ffffff?text=NO_SIGNAL'}
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-tr from-deep-violet/40 to-transparent mix-blend-overlay"></div>
               </div>
               <div className="absolute -top-2 -left-2 w-8 h-8 border-t-4 border-l-4 border-white rounded-tl-lg z-10 shadow-[0_0_10px_white]"></div>
