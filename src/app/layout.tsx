@@ -4,6 +4,19 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "WJN Portfolio",
   description: "Frontend Developer Portfolio",
+  openGraph: {
+    title: "WJN Portfolio",
+    description: "Frontend Developer Portfolio",
+    type: "website",
+    siteName: "WJN Portfolio",
+    images: [],
+  },
+  twitter: {
+    card: "summary",
+    title: "WJN Portfolio",
+    description: "Frontend Developer Portfolio",
+    images: [],
+  },
 };
 
 export default function RootLayout({
