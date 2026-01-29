@@ -16,7 +16,7 @@ export async function GET() {
     headers.set('Content-Type', hero.resumeContentType || 'application/pdf');
     headers.set('Content-Disposition', `attachment; filename="${hero.resumeFileName || 'resume.pdf'}"`);
     
-    return new NextResponse(hero.resumeData, {
+    return new NextResponse(new Uint8Array(hero.resumeData), {
       status: 200,
       headers
     });
