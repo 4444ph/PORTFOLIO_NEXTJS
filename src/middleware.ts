@@ -26,7 +26,9 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     } catch (error) {
       console.error('Invalid session:', error);
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+      const response = NextResponse.redirect(new URL('/admin/login', request.url));
+      response.cookies.delete('session');
+      return response;
     }
   }
 
