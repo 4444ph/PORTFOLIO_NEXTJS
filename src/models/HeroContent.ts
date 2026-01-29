@@ -7,6 +7,9 @@ export interface IHeroContent {
   imageUrl?: string;
   ctaText: string;
   ctaLink: string;
+  resumeData?: Buffer;
+  resumeContentType?: string;
+  resumeFileName?: string;
 }
 
 const HeroContentSchema = new Schema<IHeroContent>({
@@ -16,6 +19,9 @@ const HeroContentSchema = new Schema<IHeroContent>({
   imageUrl: { type: String }, // Optional for testing
   ctaText: { type: String, required: true },
   ctaLink: { type: String, required: true },
+  resumeData: { type: Buffer },
+  resumeContentType: { type: String },
+  resumeFileName: { type: String },
 }, {
   timestamps: true,
 });

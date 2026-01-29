@@ -11,6 +11,7 @@ interface HeroData {
   imageUrl: string;
   ctaText: string;
   ctaLink: string;
+  resumeFileName?: string;
 }
 
 export default function HeroAdmin() {
@@ -24,6 +25,8 @@ export default function HeroAdmin() {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [removeResume, setRemoveResume] = useState(false);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
   useEffect(() => {
@@ -51,17 +54,30 @@ export default function HeroAdmin() {
 
     try {
       const method = formData._id ? 'PUT' : 'POST';
+      
+      const submitData = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          submitData.append(key, value as string);
+        }
+      });
+      
+      if (removeResume) {
+        submitData.append('removeResume', 'true');
+      } else if (resumeFile) {
+        submitData.append('resume', resumeFile);
+      }
+
       const response = await fetch('/api/admin/hero', {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: submitData,
       });
 
       if (response.ok) {
         const data = await response.json();
         setFormData(data);
+        setResumeFile(null);
+        setRemoveResume(false);
         setNotification({ message: 'Hero content saved successfully!', type: 'success' });
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -218,6 +234,46 @@ export default function HeroAdmin() {
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 outline-none"
                 placeholder="#DIRECTORY"
               />
+            </div>
+
+            <div className="md:col-span-3 space-y-2">
+              <label htmlFor="resume" className="block text-[10px] font-mono uppercase text-slate-500 tracking-[0.2em] ml-1">
+                Resume_PDF
+              </label>
+              
+              {formData.resumeFileName && !removeResume ? (
+                <div className="flex items-center justify-between bg-slate-900 border border-slate-700 rounded-lg p-3">
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-neon-pink">description</span>
+                    <span className="text-sm text-white font-mono">{formData.resumeFileName}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setRemoveResume(true)}
+                    className="text-slate-400 hover:text-red-500 transition-colors tooltip"
+                    title="Remove Resume"
+                  >
+                    <span className="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="relative group">
+                  <input
+                    id="resume"
+                    name="resume"
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => {
+                      setResumeFile(e.target.files?.[0] || null);
+                      setRemoveResume(false);
+                    }}
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-neon-pink hover:file:bg-slate-700 transition font-mono border-dashed"
+                  />
+                  <p className="text-[10px] text-slate-500 mt-2 font-mono ml-1">
+                    * UPLOAD_TARGET: PDF_ONLY / SIZE_LIMIT: 4MB
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 

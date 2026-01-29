@@ -77,10 +77,23 @@ export default function Hero() {
             {data.description}
           </p>
           <div className="flex flex-col md:flex-row gap-6">
-            <a className="group relative px-6 md:px-10 py-4 bg-transparent overflow-hidden rounded-md border-2 border-electric-orange text-white font-display font-bold tracking-wider hover:text-black transition-colors duration-300 shadow-[0_0_15px_rgba(255,153,0,0.3)]" href={data.ctaLink}>
+            <a className="group relative px-6 md:px-6 py-4 bg-transparent overflow-hidden rounded-md border-2 border-electric-orange text-white font-display font-bold tracking-wider hover:text-black transition-colors duration-300 shadow-[0_0_15px_rgba(255,153,0,0.3)]" href={data.ctaLink}>
               <span className="absolute inset-0 w-full h-full bg-electric-orange transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
               <span className="relative flex items-center gap-2">
                 {data.ctaText} <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </span>
+            </a>
+            
+            <a 
+              className="group relative px-6 md:px-6 py-4 bg-transparent overflow-hidden rounded-md border-2 border-neon-pink text-white font-display 
+              font-bold tracking-wider hover:text-white transition-colors duration-300 shadow-[0_0_15px_rgba(255,0,255,0.3)] flex justify-center items-center w-full sm:w-auto text-center" 
+              href="/api/resume"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="absolute inset-0 w-full h-full bg-neon-pink/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
+              <span className="relative flex items-center gap-2">
+                DOWNLOAD_CV <span className="material-symbols-outlined text-sm">download</span>
               </span>
             </a>
           </div>

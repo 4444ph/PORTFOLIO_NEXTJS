@@ -6,7 +6,8 @@ import { verifySession } from '@/lib/auth';
 export async function GET() {
   try {
     await dbConnect();
-    const hero = await HeroContent.findOne();
+    // Exclude heavy binary data, we only need metadata
+    const hero = await HeroContent.findOne().select('-resumeData');
     
     return NextResponse.json(hero || {}, { status: 200 });
   } catch (error) {
@@ -26,9 +27,28 @@ export async function POST(request: NextRequest) {
     }
 
     await dbConnect();
-    const data = await request.json();
+    const formData = await request.formData();
     
-    const hero = await HeroContent.create(data);
+    // Extract textual data
+    const heroData: any = {
+      title: formData.get('title'),
+      subtitle: formData.get('subtitle'),
+      description: formData.get('description'),
+      imageUrl: formData.get('imageUrl'),
+      ctaText: formData.get('ctaText'),
+      ctaLink: formData.get('ctaLink'),
+    };
+
+    // Handle resume file
+    const resumeFile = formData.get('resume') as File | null;
+    if (resumeFile && resumeFile.size > 0) {
+      const buffer = Buffer.from(await resumeFile.arrayBuffer());
+      heroData.resumeData = buffer;
+      heroData.resumeContentType = resumeFile.type;
+      heroData.resumeFileName = resumeFile.name;
+    }
+    
+    const hero = await HeroContent.create(heroData);
     
     return NextResponse.json(hero, { status: 201 });
   } catch (error) {
@@ -48,8 +68,36 @@ export async function PUT(request: NextRequest) {
     }
 
     await dbConnect();
-    const data = await request.json();
-    const { _id, ...updateData } = data;
+    const formData = await request.formData();
+    const _id = formData.get('_id') as string;
+
+    const updateData: any = {
+      title: formData.get('title'),
+      subtitle: formData.get('subtitle'),
+      description: formData.get('description'),
+      imageUrl: formData.get('imageUrl'),
+      ctaText: formData.get('ctaText'),
+      ctaLink: formData.get('ctaLink'),
+    };
+    
+    // Handle remove resume flag
+    const removeResume = formData.get('removeResume');
+    if (removeResume === 'true') {
+      updateData.$unset = { 
+        resumeData: 1, 
+        resumeContentType: 1, 
+        resumeFileName: 1 
+      };
+    } else {
+      // Handle resume file update only if not removing
+      const resumeFile = formData.get('resume') as File | null;
+      if (resumeFile && resumeFile.size > 0) {
+        const buffer = Buffer.from(await resumeFile.arrayBuffer());
+        updateData.resumeData = buffer;
+        updateData.resumeContentType = resumeFile.type;
+        updateData.resumeFileName = resumeFile.name;
+      }
+    }
     
     const hero = await HeroContent.findByIdAndUpdate(
       _id,
@@ -68,7 +116,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     console.error('Error updating hero content:', error);
     return NextResponse.json(
-      { error: 'Failed to update hero content' },
+      { error: `Failed to update hero content: ${error instanceof Error ? error.message : String(error)}` },
       { status: 500 }
     );
   }
