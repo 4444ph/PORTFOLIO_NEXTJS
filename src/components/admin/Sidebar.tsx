@@ -20,7 +20,7 @@ export default function Sidebar() {
     <>
       {/* Mobile Toggle */}
       <button 
-        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-slate-800 text-white rounded-lg border border-slate-700"
+        className="md:hidden fixed top-2.5 left-6 z-50 pt-2 px-2 bg-slate-800 text-white rounded-xl border border-slate-700"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
       >
         <span className="material-symbols-outlined">{isMobileOpen ? 'close' : 'menu'}</span>
