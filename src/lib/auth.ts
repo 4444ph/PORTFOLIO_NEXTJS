@@ -43,7 +43,15 @@ export async function verifySession() {
 
   try {
     const { payload } = await jwtVerify(cookie.value, secret);
-    return payload as SessionPayload;
+    
+    if (!payload.username || !payload.exp) {
+      return null;
+    }
+
+    return {
+      username: payload.username as string,
+      expiresAt: new Date(payload.exp * 1000),
+    };
   } catch (error) {
     console.error('Failed to verify session:', error);
     return null;

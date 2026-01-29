@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sunset Grid Synthwave Portfolio",
-  description: "Full Stack Developer Portfolio - Retro Futuristic Design",
+  title: "WJN Portfolio",
+  description: "Frontend Developer Portfolio",
 };
 
 export default function RootLayout({
