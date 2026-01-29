@@ -30,8 +30,8 @@ This portfolio includes a complete content management system accessible at `/adm
 2. Set environment variables in `.env.local`:
    ```env
    MONGODB_URI=mongodb://localhost:27017/portfolio
-   ADMIN_USERNAME=admin
-   ADMIN_PASSWORD=admin123
+   ADMIN_USERNAME=(your admin username can be anything)
+   ADMIN_PASSWORD=(your admin password can be anything)
    JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
    ```
 
