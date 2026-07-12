@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import VisitorTracker from "@/components/VisitorTracker";
 
 export const metadata: Metadata = {
   title: "WJN Portfolio",
@@ -32,6 +33,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <div className="scanlines w-full h-full fixed pointer-events-none z-[9999]"></div>
+        <VisitorTracker />
         {children}
       </body>
     </html>

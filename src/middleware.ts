@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
+import { getJwtSecret } from '@/lib/jwtSecret';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const secret = new TextEncoder().encode(JWT_SECRET);
+// Switch from Edge to Node.js runtime so we can use mongoose + crypto
+export const runtime = 'nodejs';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -22,6 +23,8 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
+      const jwtSecret = await getJwtSecret();
+      const secret = new TextEncoder().encode(jwtSecret);
       await jwtVerify(sessionCookie.value, secret);
       return NextResponse.next();
     } catch (error) {

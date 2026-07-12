@@ -1,11 +1,9 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import { getJwtSecret } from './jwtSecret';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-
-const secret = new TextEncoder().encode(JWT_SECRET);
 
 export interface SessionPayload {
   username: string;
@@ -13,8 +11,10 @@ export interface SessionPayload {
 }
 
 export async function createSession(username: string) {
+  const jwtSecret = await getJwtSecret();
+  const secret = new TextEncoder().encode(jwtSecret);
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
-  
+
   const token = await new SignJWT({ username })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -42,8 +42,10 @@ export async function verifySession() {
   }
 
   try {
+    const jwtSecret = await getJwtSecret();
+    const secret = new TextEncoder().encode(jwtSecret);
     const { payload } = await jwtVerify(cookie.value, secret);
-    
+
     if (!payload.username || !payload.exp) {
       return null;
     }
